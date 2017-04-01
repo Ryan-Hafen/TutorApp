@@ -1,7 +1,30 @@
-﻿@{
-    ViewData["Title"] = "About";
-}
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+﻿@model IEnumerable<TutorApp.Models.SchoolViewModels.AppointmentDateGroup>
 
-<p>Use this area to provide additional information.</p>
+@{
+    ViewData["Title"] = "Appointment Statistics";
+}
+
+<h2>Appointment Statistics</h2>
+
+<table>
+    <tr>
+        <th>
+            Appointment Date
+        </th>
+        <th>
+            Count
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentDates)
+            </td>
+            <td>
+                @item.AppointmentCount
+            </td>
+        </tr>
+    }
+</table>

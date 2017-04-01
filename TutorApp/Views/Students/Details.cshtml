@@ -1,0 +1,56 @@
+@model TutorApp.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+    </dl>
+    <dt>
+        @Html.DisplayNameFor(model => model.Appointments)
+    </dt>
+    <dd>
+        <table class="table">
+            <tr>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Attended</th>
+            </tr>
+            @foreach (var item in Model.Appointments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppointmentDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppointmentTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Attended)
+                    </td>
+                </tr>
+            }
+        </table>
+    </dd>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.StudentID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
