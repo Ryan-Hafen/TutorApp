@@ -12,12 +12,23 @@ namespace TutorApp.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Tutor> Tutors { get; set; }
+        public DbSet<OfficeAssigned> OfficeAssigned { get; set; }
+        public DbSet<CourseAssigned> CourseAssigned { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<Appointment>().ToTable("Appointment");
             modelBuilder.Entity<Student>().ToTable("Student");
+            modelBuilder.Entity<Department>().ToTable("Department");
+            modelBuilder.Entity<Tutor>().ToTable("Tutor");
+            modelBuilder.Entity<OfficeAssigned>().ToTable("OfficeAssigned");
+            modelBuilder.Entity<CourseAssigned>().ToTable("CourseAssigned");
+
+            modelBuilder.Entity<CourseAssigned>()
+                .HasKey(c => new { c.CourseID, c.TutorID });
         }
     }
 }
