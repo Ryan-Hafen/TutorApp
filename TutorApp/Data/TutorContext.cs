@@ -16,6 +16,7 @@ namespace TutorApp.Data
         public DbSet<Tutor> Tutors { get; set; }
         public DbSet<OfficeAssigned> OfficeAssigned { get; set; }
         public DbSet<CourseAssigned> CourseAssigned { get; set; }
+        public DbSet<Person> People { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,7 @@ namespace TutorApp.Data
             modelBuilder.Entity<Tutor>().ToTable("Tutor");
             modelBuilder.Entity<OfficeAssigned>().ToTable("OfficeAssigned");
             modelBuilder.Entity<CourseAssigned>().ToTable("CourseAssigned");
+            modelBuilder.Entity<Person>().ToTable("Person");
 
             modelBuilder.Entity<CourseAssigned>()
                 .HasKey(c => new { c.CourseID, c.TutorID });

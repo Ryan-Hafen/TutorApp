@@ -1,0 +1,48 @@
+@model TutorApp.Models.SchoolViewModels.AppointmentIndexData
+
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<h2>Appointments</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Appointment Date</th>
+            <th>Student Name</th>
+            <th>Assinged Tutor</th>
+            <th>Courses</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Appointments)
+        {
+            string selectedRow = "";
+            if (item.AppointmentID == (int?)ViewData["AppointmentID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Student.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tutor.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Title)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

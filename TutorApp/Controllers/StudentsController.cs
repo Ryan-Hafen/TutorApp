@@ -80,7 +80,7 @@ namespace TutorApp.Controllers
                 .Include(s => s.Appointments)
                 .ThenInclude(e => e.Course)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.StudentID == id);
+                .SingleOrDefaultAsync(m => m.ID == id);
 
             if (student == null)
             {
@@ -131,7 +131,7 @@ namespace TutorApp.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.SingleOrDefaultAsync(m => m.StudentID == id);
+            var student = await _context.Students.SingleOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
                 return NotFound();
@@ -150,7 +150,7 @@ namespace TutorApp.Controllers
             {
                 return NotFound();
             }
-            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.StudentID == id);
+            var studentToUpdate = await _context.Students.SingleOrDefaultAsync(s => s.ID == id);
             if (await TryUpdateModelAsync<Student>(
                 studentToUpdate,
                 "",
@@ -182,7 +182,7 @@ namespace TutorApp.Controllers
 
             var student = await _context.Students
                 .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.StudentID == id);
+                .SingleOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
                 return NotFound();
@@ -205,7 +205,7 @@ namespace TutorApp.Controllers
         {
             try
             {
-                Student studentToDelete = new Student() { StudentID = id };
+                Student studentToDelete = new Student() { ID = id };
                 _context.Entry(studentToDelete).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -219,7 +219,7 @@ namespace TutorApp.Controllers
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.StudentID == id);
+            return _context.Students.Any(e => e.ID == id);
         }
     }
 }

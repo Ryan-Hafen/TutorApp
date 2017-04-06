@@ -19,6 +19,9 @@ namespace TutorApp.Models
 
         public int? TutorID { get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         public Tutor Administrator { get; set; }
         public ICollection<Course> Courses { get; set; }
     }

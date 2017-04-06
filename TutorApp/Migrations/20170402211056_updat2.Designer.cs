@@ -8,9 +8,10 @@ using TutorApp.Data;
 namespace TutorApp.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    partial class TutorContextModelSnapshot : ModelSnapshot
+    [Migration("20170402211056_updat2")]
+    partial class updat2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -31,15 +32,11 @@ namespace TutorApp.Migrations
 
                     b.Property<int>("StudentID");
 
-                    b.Property<int>("TutorID");
-
                     b.HasKey("AppointmentID");
 
                     b.HasIndex("CourseID");
 
                     b.HasIndex("StudentID");
-
-                    b.HasIndex("TutorID");
 
                     b.ToTable("Appointment");
                 });
@@ -170,11 +167,6 @@ namespace TutorApp.Migrations
                     b.HasOne("TutorApp.Models.Student", "Student")
                         .WithMany("Appointments")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TutorApp.Models.Tutor", "Tutor")
-                        .WithMany()
-                        .HasForeignKey("TutorID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

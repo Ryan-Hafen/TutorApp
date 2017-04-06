@@ -8,9 +8,10 @@ using TutorApp.Data;
 namespace TutorApp.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    partial class TutorContextModelSnapshot : ModelSnapshot
+    [Migration("20170402233743_newupdate")]
+    partial class newupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

@@ -1,14 +1,17 @@
-﻿using TutorApp.Models;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using TutorApp.Models;
+using TutorApp.Data;
 
-namespace TutorApp.Data
+namespace ContosoUniversity.Data
 {
     public static class DbInitializer
     {
         public static void Initialize(TutorContext context)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
 
             // Look for any students.
             if (context.Students.Any())
@@ -18,15 +21,16 @@ namespace TutorApp.Data
 
             var students = new Student[]
             {
-            new Student{FirstName="Carson",LastName="Alexander",Email="AlexanderC@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Meredith",LastName="Alonso",Email="AlonsoM@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Arturo",LastName="Anand",Email="AnandA@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Gytis",LastName="Barzdukas",Email="BarzdukasG@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Yan",LastName="Li",Email="LiY@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Peggy",LastName="Justice",Email="JusticeP@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Laura",LastName="Norman",Email="NormanL@CoolSchool.edu",PhoneNumber=5551234567},
-            new Student{FirstName="Nino",LastName="Olivetto",Email="OlivettoM@CoolSchool.edu",PhoneNumber=5551234567}
+                new Student { FirstName = "Carson",   LastName = "Alexander"},
+                new Student { FirstName = "Meredith", LastName = "Alonso"},
+                new Student { FirstName = "Arturo",   LastName = "Anand"},
+                new Student { FirstName = "Gytis",    LastName = "Barzdukas"},
+                new Student { FirstName = "Yan",      LastName = "Li"},
+                new Student { FirstName = "Peggy",    LastName = "Justice"},
+                new Student { FirstName = "Laura",    LastName = "Norman"},
+                new Student { FirstName = "Nino",     LastName = "Olivetto"}
             };
+
             foreach (Student s in students)
             {
                 context.Students.Add(s);
@@ -55,18 +59,18 @@ namespace TutorApp.Data
 
             var departments = new Department[]
             {
-                new Department { Name = "English",
+                new Department { Name = "English",    
                     StartDate = DateTime.Parse("2007-09-01"),
-                    TutorID  = tutors.Single( i => i.LastName == "Abercrombie").TutorID },
+                    TutorID  = tutors.Single( i => i.LastName == "Abercrombie").ID },
                 new Department { Name = "Mathematics",
                     StartDate = DateTime.Parse("2007-09-01"),
-                    TutorID  = tutors.Single( i => i.LastName == "Fakhouri").TutorID },
-                new Department { Name = "Engineering",
+                    TutorID  = tutors.Single( i => i.LastName == "Fakhouri").ID },
+                new Department { Name = "Engineering", 
                     StartDate = DateTime.Parse("2007-09-01"),
-                    TutorID  = tutors.Single( i => i.LastName == "Harui").TutorID },
-                new Department { Name = "Economics",
+                    TutorID  = tutors.Single( i => i.LastName == "Harui").ID },
+                new Department { Name = "Economics", 
                     StartDate = DateTime.Parse("2007-09-01"),
-                    TutorID  = tutors.Single( i => i.LastName == "Kapoor").TutorID }
+                    TutorID  = tutors.Single( i => i.LastName == "Kapoor").ID }
             };
 
             foreach (Department d in departments)
@@ -109,13 +113,13 @@ namespace TutorApp.Data
             var officeAssigned = new OfficeAssigned[]
             {
                 new OfficeAssigned {
-                    TutorID = tutors.Single( i => i.LastName == "Fakhouri").TutorID,
+                    TutorID = tutors.Single( i => i.LastName == "Fakhouri").ID,
                     Location = "Smith 17" },
                 new OfficeAssigned {
-                    TutorID = tutors.Single( i => i.LastName == "Harui").TutorID,
+                    TutorID = tutors.Single( i => i.LastName == "Harui").ID,
                     Location = "Gowan 27" },
                 new OfficeAssigned {
-                    TutorID = tutors.Single( i => i.LastName == "Kapoor").TutorID,
+                    TutorID = tutors.Single( i => i.LastName == "Kapoor").ID,
                     Location = "Thompson 304" },
             };
 
@@ -125,43 +129,43 @@ namespace TutorApp.Data
             }
             context.SaveChanges();
 
-            var courseTutors = new CourseAssigned[]
+            var courseTutor = new CourseAssigned[]
             {
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Kapoor").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Kapoor").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Harui").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Harui").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Zheng").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Zheng").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Zheng").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Zheng").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Fakhouri").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Fakhouri").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Harui").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Harui").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Abercrombie").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Abercrombie").ID
                     },
                 new CourseAssigned {
                     CourseID = courses.Single(c => c.Title == "Literature" ).CourseID,
-                    TutorID = tutors.Single(i => i.LastName == "Abercrombie").TutorID
+                    TutorID = tutors.Single(i => i.LastName == "Abercrombie").ID
                     },
             };
 
-            foreach (CourseAssigned ci in courseTutors)
+            foreach (CourseAssigned ci in courseTutor)
             {
                 context.CourseAssigned.Add(ci);
             }
@@ -169,69 +173,15 @@ namespace TutorApp.Data
 
             var appointments = new Appointment[]
             {
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Alexander").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
-                    Attended = Attended.Y
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Alexander").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
-                    Attended = Attended.Y
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Alexander").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
-                    Attended = Attended.N
-                    },
-                    new Appointment {
-                        StudentID = students.Single(s => s.LastName == "Alonso").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
-                    Attended = Attended.Y
-                    },
-                    new Appointment {
-                        StudentID = students.Single(s => s.LastName == "Alonso").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
-                    Attended = Attended.Y
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Alonso").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
-                    Attended = Attended.N
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Anand").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Anand").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
-                    Attended = Attended.N
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Barzdukas").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
-                    Attended = Attended.N
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Li").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Composition").CourseID,
-                    Attended = Attended.Y
-                    },
-                    new Appointment {
-                    StudentID = students.Single(s => s.LastName == "Justice").StudentID,
-                    CourseID = courses.Single(c => c.Title == "Literature").CourseID,
-                    Attended = Attended.Y
-                    }
             };
 
             foreach (Appointment e in appointments)
             {
-                var appointmentInDataBase = context.Appointments.Where(
+                var appointmentsInDataBase = context.Appointments.Where(
                     s =>
-                            s.Student.StudentID == e.StudentID &&
+                            s.Student.ID == e.StudentID &&
                             s.Course.CourseID == e.CourseID).SingleOrDefault();
-                if (appointmentInDataBase == null)
+                if (appointmentsInDataBase == null)
                 {
                     context.Appointments.Add(e);
                 }

@@ -8,8 +8,8 @@ using TutorApp.Data;
 namespace TutorApp.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    [Migration("20170401043712_ComplexData")]
-    partial class ComplexData
+    [Migration("20170402204831_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,13 +52,9 @@ namespace TutorApp.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("TutorID");
-
                     b.HasKey("CourseID");
 
                     b.HasIndex("DepartmentID");
-
-                    b.HasIndex("TutorID");
 
                     b.ToTable("Course");
                 });
@@ -84,6 +80,10 @@ namespace TutorApp.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50);
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
                     b.Property<DateTime>("StartDate");
 
                     b.Property<int?>("TutorID");
@@ -107,16 +107,20 @@ namespace TutorApp.Migrations
                     b.ToTable("OfficeAssigned");
                 });
 
-            modelBuilder.Entity("TutorApp.Models.Student", b =>
+            modelBuilder.Entity("TutorApp.Models.Person", b =>
                 {
-                    b.Property<int>("StudentID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<string>("Email")
                         .IsRequired();
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasColumnName("FirstName")
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
@@ -125,30 +129,32 @@ namespace TutorApp.Migrations
 
                     b.Property<long>("PhoneNumber");
 
-                    b.HasKey("StudentID");
+                    b.HasKey("ID");
+
+                    b.ToTable("Person");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Person");
+                });
+
+            modelBuilder.Entity("TutorApp.Models.Student", b =>
+                {
+                    b.HasBaseType("TutorApp.Models.Person");
+
 
                     b.ToTable("Student");
+
+                    b.HasDiscriminator().HasValue("Student");
                 });
 
             modelBuilder.Entity("TutorApp.Models.Tutor", b =>
                 {
-                    b.Property<int>("TutorID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnName("FirstName")
-                        .HasMaxLength(50);
+                    b.HasBaseType("TutorApp.Models.Person");
 
                     b.Property<DateTime>("HireDate");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.HasKey("TutorID");
-
                     b.ToTable("Tutor");
+
+                    b.HasDiscriminator().HasValue("Tutor");
                 });
 
             modelBuilder.Entity("TutorApp.Models.Appointment", b =>
@@ -170,10 +176,6 @@ namespace TutorApp.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("DepartmentID")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TutorApp.Models.Tutor")
-                        .WithMany("CourseAssigned")
-                        .HasForeignKey("TutorID");
                 });
 
             modelBuilder.Entity("TutorApp.Models.CourseAssigned", b =>
@@ -184,7 +186,7 @@ namespace TutorApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("TutorApp.Models.Tutor", "Tutor")
-                        .WithMany()
+                        .WithMany("CourseAssigned")
                         .HasForeignKey("TutorID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
